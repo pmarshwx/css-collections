@@ -1,3 +1,9 @@
+# macOS
+.DS_Store
+
+# Editor / IDE
+.vscode/
+*.swp
 
 # Beads / Dolt files (added by bd init)
 .dolt/

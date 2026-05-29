@@ -51,20 +51,51 @@ bd close <id>         # Complete work
 <!-- END BEADS INTEGRATION -->
 
 
+## What This Repo Is
+
+A collection of hand-authored CSS stylesheets used to brand documents and
+(eventually) websites with **Oklahoma Baptist University (OBU)** colors:
+
+- **OBU Green** `#295b30`
+- **OBU Gold** `#c48b2b`
+
+The current sheet, `obu.css`, styles Markdown preview/export so that Markdown
+documents render with OBU branding before being converted to PDF (via the
+VS Code "Markdown PDF" / "Markdown Preview" or Marked 2 toolchains).
+
 ## Build & Test
 
-_Add your build and test commands here_
+There is no build step — these are static `.css` files consumed directly by
+the renderer. "Testing" is visual:
 
-```bash
-# Example:
-# npm install
-# npm test
-```
+1. Point your Markdown previewer/PDF exporter at the stylesheet (e.g. set
+   `markdown-pdf.styles` or Marked 2's custom CSS to `obu.css`).
+2. Render a representative Markdown document and inspect headings, code blocks,
+   tables, blockquotes, `.qa-block` answer areas, and the print/PDF output.
+
+A linter such as `stylelint` may be added later (see beads issues).
 
 ## Architecture Overview
 
-_Add a brief overview of your project architecture_
+- `obu.css` — the OBU-branded Markdown/PDF stylesheet. Self-contained; targets
+  the `body` / `.vscode-body` / `.markdown-body` containers used by VS Code and
+  Marked 2 previews, plus an `@media print` block for PDF tuning.
+- Custom helper classes for printable worksheets live alongside the base
+  styles: `.qa-block`, `.answer-space`, `.answer-lines`, `.answer-box`,
+  `.page-break`.
+- Future website stylesheets will be added at the repo root (flat layout for
+  now; revisit folder structure once a second sheet exists).
 
 ## Conventions & Patterns
 
-_Add your project-specific conventions here_
+- **Brand colors are literal hex values today.** OBU Green `#295b30` and
+  OBU Gold `#c48b2b` are repeated inline. Centralizing them into CSS custom
+  properties (`--obu-green`, `--obu-gold`) is tracked in beads — prefer that
+  approach for new work.
+- **`!important` is intentional** in `obu.css`: preview/PDF tools inject their
+  own default stylesheets, so overrides need the extra specificity. Keep using
+  it within the Markdown sheet. Website CSS (added later) should NOT rely on
+  `!important`.
+- Keep print/PDF concerns inside the `@media print` block.
+- Two-space indentation, lowercase hex, one selector per line in grouped
+  selector lists (matches existing style).
