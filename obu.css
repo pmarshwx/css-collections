@@ -1,13 +1,53 @@
 /* Markdown preview + Markdown PDF shared styling */
+/* OBU-branded stylesheet for lecture notes, quizzes, and handouts. */
+
+/* ---------------------------------------------------------------------------
+   Brand + palette tokens
+   Change a color here and it updates everywhere. Note: `var()` resolves fine
+   in the Chromium (VS Code Markdown PDF) and WebKit (Marked 2) export engines.
+--------------------------------------------------------------------------- */
+
+:root {
+  /* OBU brand */
+  --obu-green: #295b30;
+  --obu-gold: #c48b2b;
+
+  /* Text + page */
+  --color-text: #222222;
+  --color-text-muted: #333333;
+  --color-bg: #ffffff;
+
+  /* Green-tinted surfaces (code) */
+  --surface-code: #f3f5f1;
+  --border-code: #dde5d8;
+  --border-pre: #d6dfd2;
+  --color-code-text: #1f3f24;
+
+  /* Cream surfaces (blockquotes, callouts, zebra rows) */
+  --surface-cream: #faf8f3;
+  --surface-cream-warm: #f7f3ea;
+
+  /* Tables */
+  --border-table: #d9ded7;
+
+  /* Accents */
+  --color-rust: #9a4f1f;
+
+  /* Syntax highlighting */
+  --hljs-base: #223026;
+  --hljs-string: #8a5f18;
+  --hljs-comment: #6f7f6f;
+  --hljs-title: #6b4f12;
+}
 
 body,
 .vscode-body,
 .markdown-body {
   font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif !important;
   font-size: 13px !important;
-  line-height: 1.15 !important;
-  color: #222 !important;
-  background: #ffffff !important;
+  line-height: 1.4 !important;
+  color: var(--color-text) !important;
+  background: var(--color-bg) !important;
   max-width: none !important;
   padding: 36px 48px !important;
   margin: 0 auto !important;
@@ -17,51 +57,83 @@ body,
 
 h1,
 .markdown-body h1 {
-  color: #295b30 !important;
+  color: var(--obu-green) !important;
   font-size: 2.4em !important;
-  font-weight: 750 !important;
+  font-weight: 800 !important;
   line-height: 1.15 !important;
   margin-top: 0 !important;
   margin-bottom: 0.15em !important;
   padding-bottom: 0 !important;
   border-bottom: none !important;
-  /* border-bottom: 5px solid #c48b2b !important; */
+  /* border-bottom: 5px solid var(--obu-gold) !important; */
 }
 
 h2,
 .markdown-body h2 {
-  color: #295b30 !important;
+  color: var(--obu-green) !important;
   font-size: 1.75em !important;
   font-weight: 700 !important;
   line-height: 1.15 !important;
-  margin-top: 0 !important;
-  margin-bottom: 0.15em !important;
+  margin-top: 1.8em !important;
+  margin-bottom: 0.3em !important;
   padding-bottom: 0 !important;
   border-bottom: none !important;
-  /* border-bottom: 2px solid #c48b2b !important; */
+  /* border-bottom: 2px solid var(--obu-gold) !important; */
 }
 
 h3,
 .markdown-body h3 {
-  color: #295b30 !important;
+  color: var(--obu-green) !important;
   font-size: 1.35em !important;
   font-weight: 700 !important;
-  line-height: 1.15 !important;
-  margin-top: 0em !important;
-  margin-bottom: 0.45em !important;
-  padding-bottom: 0.1em !important;
+  line-height: 1.2 !important;
+  margin-top: 1.3em !important;
+  margin-bottom: 0.35em !important;
 }
 
 h4,
-h5,
-h6,
-.markdown-body h4,
-.markdown-body h5,
-.markdown-body h6 {
-  color: #295b30 !important;
+.markdown-body h4 {
+  color: var(--obu-green) !important;
+  font-size: 1.15em !important;
   font-weight: 700 !important;
   margin-top: 1.1em !important;
-  margin-bottom: 0.35em !important;
+  margin-bottom: 0.3em !important;
+}
+
+h5,
+.markdown-body h5 {
+  color: var(--obu-green) !important;
+  font-size: 1em !important;
+  font-weight: 700 !important;
+  margin-top: 1em !important;
+  margin-bottom: 0.25em !important;
+}
+
+h6,
+.markdown-body h6 {
+  color: var(--obu-green) !important;
+  font-size: 0.9em !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  margin-top: 1em !important;
+  margin-bottom: 0.25em !important;
+}
+
+/* Don't add a big gap above the first heading or between stacked headings */
+.markdown-body > :first-child,
+h1:first-child,
+h2:first-child,
+h3:first-child {
+  margin-top: 0 !important;
+}
+
+h1 + h2,
+h2 + h3,
+h3 + h4,
+h4 + h5,
+h5 + h6 {
+  margin-top: 0.5em !important;
 }
 
 /* Paragraphs */
@@ -70,6 +142,124 @@ p,
 .markdown-body p {
   margin-top: 0 !important;
   margin-bottom: 0.9em !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Callout / admonition boxes
+   Usage in Markdown (raw HTML block):
+     <div class="note">Body text…</div>
+   Variants: .note .tip .warning .example .key-term
+   Each prints an auto label; omit it by adding the .no-label class.
+--------------------------------------------------------------------------- */
+
+.callout,
+.note,
+.tip,
+.warning,
+.example,
+.key-term {
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+  margin: 1em 0 !important;
+  padding: 0.7em 1em !important;
+  border-left: 5px solid var(--obu-green);
+  border-radius: 0 6px 6px 0;
+  background: var(--surface-cream);
+}
+
+.callout > :first-child,
+.note > :first-child,
+.tip > :first-child,
+.warning > :first-child,
+.example > :first-child,
+.key-term > :first-child {
+  margin-top: 0 !important;
+}
+
+.callout > :last-child,
+.note > :last-child,
+.tip > :last-child,
+.warning > :last-child,
+.example > :last-child,
+.key-term > :last-child {
+  margin-bottom: 0 !important;
+}
+
+.note::before,
+.tip::before,
+.warning::before,
+.example::before,
+.key-term::before {
+  display: block;
+  font-size: 0.8em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.35em;
+}
+
+.no-label::before {
+  content: none !important;
+}
+
+.note::before {
+  content: "Note";
+  color: var(--obu-green);
+}
+
+.tip {
+  background: var(--surface-code);
+}
+.tip::before {
+  content: "Tip";
+  color: var(--obu-green);
+}
+
+.warning {
+  border-left-color: var(--obu-gold);
+  background: var(--surface-cream-warm);
+}
+.warning::before {
+  content: "Warning";
+  color: var(--color-rust);
+}
+
+.example {
+  border-left-color: var(--obu-gold);
+}
+.example::before {
+  content: "Example";
+  color: var(--obu-gold);
+}
+
+.key-term {
+  border-left-color: var(--obu-gold);
+  background: var(--surface-cream-warm);
+}
+.key-term::before {
+  content: "Key Term";
+  color: var(--obu-gold);
+}
+
+/* Definition lists — vocabulary / term glossaries */
+
+dl,
+.markdown-body dl {
+  margin: 0.9em 0 !important;
+}
+
+dt,
+.markdown-body dt {
+  font-weight: 700 !important;
+  color: var(--obu-green) !important;
+  margin-top: 0.6em !important;
+  break-after: avoid !important;
+  page-break-after: avoid !important;
+}
+
+dd,
+.markdown-body dd {
+  margin: 0 0 0.4em 1.4em !important;
 }
 
 /* Question Blocks */
@@ -117,16 +307,16 @@ p,
     to bottom,
     transparent,
     transparent 22px,
-    #c48b2b 23px
+    var(--obu-gold) 23px
   );
 }
 
 .answer-box {
   height: 120px;
-  border: 2px solid #295b30;
+  border: 2px solid var(--obu-green);
   border-radius: 6px;
   margin: 1em 0;
-  background: #faf8f3;
+  background: var(--surface-cream);
 }
 
 /* Lists */
@@ -138,7 +328,7 @@ ol,
   margin-top: 0.25em !important;
   margin-bottom: 0.9em !important;
   padding-left: 1.6em !important;
-  line-height: 1.15 !important;
+  line-height: 1.4 !important;
 }
 
 li,
@@ -151,13 +341,61 @@ li > p,
   margin-bottom: 0.35em !important;
 }
 
+/* Multiple-choice options — render as a. b. c.
+   Usage: <div class="choices"> around a Markdown ordered list, or add
+   class="choices" directly to an <ol>. */
+ol.choices,
+.choices ol,
+.markdown-body ol.choices,
+.markdown-body .choices ol {
+  list-style-type: lower-alpha !important;
+}
+
+ol.choices > li,
+.choices ol > li {
+  margin-bottom: 0.45em !important;
+}
+
+/* Task lists / checkboxes (- [ ] / - [x]) */
+.task-list-item,
+.markdown-body .task-list-item {
+  list-style: none !important;
+}
+
+.task-list-item input[type="checkbox"] {
+  margin: 0 0.45em 0 -1.4em !important;
+  accent-color: var(--obu-green);
+}
+
 /* Links */
 
 a,
 .markdown-body a {
-  color: #295b30 !important;
-  text-decoration-color: #c48b2b !important;
+  color: var(--obu-green) !important;
+  text-decoration-color: var(--obu-gold) !important;
   text-decoration-thickness: 1.5px !important;
+}
+
+/* Inline highlight + keyboard keys */
+
+mark,
+.markdown-body mark {
+  background: rgba(196, 139, 43, 0.28) !important;
+  color: inherit !important;
+  padding: 0.05em 0.2em !important;
+  border-radius: 3px !important;
+}
+
+kbd,
+.markdown-body kbd {
+  font-family: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace !important;
+  font-size: 0.82em !important;
+  color: var(--color-code-text) !important;
+  background: var(--surface-code) !important;
+  border: 1px solid var(--border-code) !important;
+  border-bottom-width: 2px !important;
+  border-radius: 4px !important;
+  padding: 0.05em 0.4em !important;
 }
 
 /* Blockquotes */
@@ -166,9 +404,9 @@ blockquote,
 .markdown-body blockquote {
   margin: 1em 0 !important;
   padding: 0.7em 1em !important;
-  color: #333 !important;
-  background: #f7f3ea !important;
-  border-left: 5px solid #c48b2b !important;
+  color: var(--color-text-muted) !important;
+  background: var(--surface-cream-warm) !important;
+  border-left: 5px solid var(--obu-gold) !important;
 }
 
 /* Code */
@@ -177,9 +415,9 @@ code,
 .markdown-body code {
   font-family: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace !important;
   font-size: 0.92em !important;
-  color: #1f3f24 !important;
-  background-color: #f3f5f1 !important;
-  border: 1px solid #dde5d8 !important;
+  color: var(--color-code-text) !important;
+  background-color: var(--surface-code) !important;
+  border: 1px solid var(--border-code) !important;
   border-radius: 4px !important;
   padding: 0.12em 0.35em !important;
 }
@@ -189,9 +427,9 @@ pre,
   font-family: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace !important;
   font-size: 0.92em !important;
   line-height: 1.25 !important;
-  background-color: #f3f5f1 !important;
-  border: 1px solid #d6dfd2 !important;
-  border-left: 5px solid #295b30 !important;
+  background-color: var(--surface-code) !important;
+  border: 1px solid var(--border-pre) !important;
+  border-left: 5px solid var(--obu-green) !important;
   border-radius: 6px !important;
   padding: 0.9em 1em !important;
   overflow: auto !important;
@@ -217,22 +455,22 @@ table,
 
 th,
 .markdown-body th {
-  background: #295b30 !important;
-  color: #ffffff !important;
+  background: var(--obu-green) !important;
+  color: var(--color-bg) !important;
   font-weight: 700 !important;
-  border: 1px solid #295b30 !important;
+  border: 1px solid var(--obu-green) !important;
   padding: 0.55em 0.7em !important;
 }
 
 td,
 .markdown-body td {
-  border: 1px solid #d9ded7 !important;
+  border: 1px solid var(--border-table) !important;
   padding: 0.5em 0.7em !important;
 }
 
 tr:nth-child(even) td,
 .markdown-body tr:nth-child(even) td {
-  background: #faf8f3 !important;
+  background: var(--surface-cream) !important;
 }
 
 /* Horizontal rules */
@@ -240,7 +478,7 @@ tr:nth-child(even) td,
 hr,
 .markdown-body hr {
   border: none !important;
-  border-top: 5px solid #c48b2b !important;
+  border-top: 5px solid var(--obu-gold) !important;
   margin: 1.6em 0 !important;
 }
 
@@ -258,42 +496,51 @@ pre code.hljs,
 code.python.hljs,
 #wrapper pre code.hljs {
   display: block !important;
-  color: #223026 !important;
-  background: #f3f5f1 !important;
+  color: var(--hljs-base) !important;
+  background: var(--surface-code) !important;
   padding: 1em !important;
   border: none !important;
 }
 
 /* Keywords */
 .hljs-keyword {
-  color: #295b30 !important;
+  color: var(--obu-green) !important;
   font-weight: 700 !important;
 }
 
 /* Strings */
 .hljs-string {
-  color: #8a5f18 !important;
+  color: var(--hljs-string) !important;
 }
 
 /* Comments */
 .hljs-comment {
-  color: #6f7f6f !important;
+  color: var(--hljs-comment) !important;
   font-style: italic !important;
 }
 
 /* Numbers and literals */
 .hljs-number,
 .hljs-literal {
-  color: #9a4f1f !important;
+  color: var(--color-rust) !important;
   font-weight: 600 !important;
 }
 
 /* Function names when available */
 .hljs-title {
-  color: #6b4f12 !important;
+  color: var(--hljs-title) !important;
   font-weight: 700 !important;
 }
 /* Print/PDF tuning */
+
+/* Optional: uncomment to control the printed page margin from the stylesheet.
+   Leave commented if your export tool (e.g. VS Code Markdown PDF) already sets
+   margins — otherwise the two stack. Margin boxes for page numbers are NOT
+   supported by the Chromium/WebKit export engines, so they're omitted here.
+@page {
+  margin: 16mm 14mm;
+}
+*/
 
 @media print {
   body,
@@ -302,29 +549,51 @@ code.python.hljs,
     max-width: none !important;
     padding: 36px 48px !important;
     font-size: 12px !important;
+    orphans: 3;
+    widows: 3;
+  }
+
+  p,
+  li {
+    orphans: 3;
+    widows: 3;
   }
 
   h1,
   h2,
-  h3 {
+  h3,
+  h4,
+  h5,
+  h6 {
+    break-after: avoid !important;
     page-break-after: avoid !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
   }
 
   pre,
   blockquote,
-  table {
+  table,
+  .callout,
+  .note,
+  .tip,
+  .warning,
+  .example,
+  .key-term {
+    break-inside: avoid !important;
     page-break-inside: avoid !important;
     font-size: 0.92em !important;
     line-height: 1.25 !important;
   }
 
   a {
-    color: #295b30 !important;
+    color: var(--obu-green) !important;
     text-decoration: none !important;
   }
 
   .page-break {
-    page-break-after: always;
+    break-after: page !important;
+    page-break-after: always !important;
   }
 
   .qa-block,
@@ -333,7 +602,7 @@ code.python.hljs,
   .answer-box {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
-}
+  }
 
   .answer-space,
   .answer-lines,
