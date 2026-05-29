@@ -40,6 +40,14 @@ tools use, and includes an `@media print` block tuned for PDF output.
 | `.answer-box`    | Bordered answer box                                  |
 | `.page-break`    | Forces a page break in PDF output                    |
 
+## Reference / preview
+
+[`examples/sample.md`](examples/sample.md) exercises every style and helper
+class in `obu.css` (headings, callouts, definition lists, multiple-choice
+`.choices`, task lists, `mark`/`kbd`, code, tables, and the `qa-block` answer
+areas). Preview it with `obu.css` applied to see the full look, and use it as a
+visual check after editing the stylesheet.
+
 ## Issue tracking
 
 Work is tracked with [beads](https://github.com/gastownhall/beads) (`bd`).
